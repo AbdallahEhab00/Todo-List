@@ -11,10 +11,17 @@ import UIKit
 class TodoListViewcontroler: UITableViewController  {
 
     var itemArray = ["buy milk","go to cinema","play fotball"]
+    let defults = UserDefaults.standard
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        if let items = defults.array(forKey: "TodolistArray") as? [String] {
+            itemArray = items 
+        }
     }
+    
+    
     // MARK -> data source method
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TodoCell", for: indexPath)
@@ -46,7 +53,8 @@ class TodoListViewcontroler: UITableViewController  {
        
         let action = UIAlertAction(title: "ADD", style: .default) { (action) in
          // what happend when user pressed on add
-            self.itemArray.append(textfield.text!) 
+            self.itemArray.append(textfield.text!)
+            self.defults.set(self.itemArray, forKey: "TodolistArray")
             self.tableView.reloadData()
         }
         alert.addTextField { (alertTextfield) in
